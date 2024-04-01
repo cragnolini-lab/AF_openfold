@@ -288,6 +288,9 @@ def fape_loss(
     batch: Dict[str, torch.Tensor],
     config: ml_collections.ConfigDict,
 ) -> torch.Tensor:
+    # AF: place whole function in for loop
+    # AF: losses = []
+    # AF: for o,b in zip(out, batch):
     traj = out["sm"]["frames"]
     asym_id = batch.get("asym_id")
     if asym_id is not None:
@@ -318,10 +321,12 @@ def fape_loss(
     )
 
     loss = weighted_bb_loss + config.sidechain.weight * sc_loss
-
+    # AF: losses.append(loss)
+    
     # Average over the batch dimension
     loss = torch.mean(loss)
 
+    # AF: return two loss tensors? or tensor containing 2 loss values?
     return loss
 
 
